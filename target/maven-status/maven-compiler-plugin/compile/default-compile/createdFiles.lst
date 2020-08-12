@@ -1,0 +1,8 @@
+com\bancobogota\web\JAXRSActivator.class
+com\bancobogota\domain\Person.class
+com\bancobogota\personas\backend\resources\JavaEE8Resource.class
+com\bancobogota\service\PersonServiceRS.class
+com\bancobogota\web\CorsFilter.class
+com\bancobogota\personas\backend\JAXRSConfiguration.class
+com\bancobogota\data\PersonDAO.class
+com\bancobogota\data\PersonDAOImpl.class
