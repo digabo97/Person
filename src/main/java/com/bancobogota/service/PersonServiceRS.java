@@ -22,6 +22,7 @@ public class PersonServiceRS {
 
     @GET
     @Produces(value = MediaType.APPLICATION_JSON)
+    @Path("all")
     public List<Person> listPersons() {
 
         List<Person> llp_persons;
@@ -60,8 +61,8 @@ public class PersonServiceRS {
     @PUT
     @Consumes(value = MediaType.APPLICATION_JSON)
     @Produces(value = MediaType.APPLICATION_JSON)
-    @Path("{id}")
-    public Response editPerson(@PathParam("id") int ai_idPerson, Person ap_modifyPerson)
+    @Path("adopt/{id}/{idFather}/{idMother}")
+    public Response editPerson(@PathParam("id") int ai_idPerson, @PathParam("id") int ai_idFather, @PathParam("id") int ai_idMother)
     {
         Person lp_person;
         
@@ -69,11 +70,14 @@ public class PersonServiceRS {
         
         if(lp_person != null)
         {
-            ipd_personDAO.updatePerson(ap_modifyPerson);
+            lp_person.setIdFather(ai_idFather);
+            lp_person.setIdMother(ai_idMother);
             
-            System.out.println("Persona modificada: " + ap_modifyPerson);
+            ipd_personDAO.updatePerson(lp_person);
+            
+            System.out.println("Persona modificada: " + lp_person);
         
-            return Response.ok().entity(ap_modifyPerson).build();
+            return Response.ok().entity(lp_person).build();
         }
         else
             return Response.status(Status.NOT_FOUND).build();
@@ -81,7 +85,7 @@ public class PersonServiceRS {
     
     @DELETE
     @Produces(value = MediaType.APPLICATION_JSON)
-    @Path("{id}")
+    @Path("del/{id}")
     public Response deletePerson(@PathParam("id") int ai_idPerson)
     {
         ipd_personDAO.deletePerson(new Person(ai_idPerson));

@@ -42,14 +42,17 @@ public class Person implements Serializable {
         idPerson = ai_idPerson;
     }
 
-    public Person(int ai_idPerson, String as_fullName, Date ad_birth, String as_phone) {
+    public Person(int ai_idPerson, String as_fullName, Date ad_birth, String as_phone, int ai_idFather, int ai_idMother, String as_gender) {
         idPerson = ai_idPerson;
         fullName = as_fullName;
         birth = ad_birth;
         phone = as_phone;
+        idFather = ai_idFather;
+        idMother = ai_idMother;
+        gender = as_gender;
     }
 
-    public Person Adoptar(Person ap_person) {
+    public Person Adopt(Person ap_person) {
         if (ap_person != null) {
             String ls_gender;
 
