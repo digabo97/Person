@@ -62,24 +62,28 @@ public class PersonServiceRS {
     @Consumes(value = MediaType.APPLICATION_JSON)
     @Produces(value = MediaType.APPLICATION_JSON)
     @Path("adopt/{idChild}/{idFather}/{idMother}")
-    public Response adopt(@PathParam("idChild") int ai_idPerson, @PathParam("idFather") int ai_idFather, @PathParam("idMother") int ai_idMother) {
-        Person lp_person;
+    public Response adopt(@PathParam("idChild") int ai_idChild, @PathParam("idFather") int ai_idFather, @PathParam("idMother") int ai_idMother) {
+        Person lp_child;
 
-        lp_person = ipd_personDAO.findPerson(new Person(ai_idPerson));
+        lp_child = ipd_personDAO.findPerson(new Person(ai_idChild));
 
-        if (lp_person != null) {
+        if (lp_child != null) {
 
             int li_idFather;
             int li_idMother;
 
-            li_idFather = lp_person.getIdFather();
-            li_idMother = lp_person.getIdMother();
+            li_idFather = lp_child.getIdFather();
+            li_idMother = lp_child.getIdMother();
 
-            if (li_idFather == 0 && li_idMother == 0) {
+            if (li_idFather != 0 && li_idMother != 0) {
                 return Response.status(Status.BAD_REQUEST).build();
             }
 
             if (ai_idFather != 0) {
+                if (li_idFather != 0) {
+                    return Response.status(Status.BAD_REQUEST).build();
+                }
+
                 Person lp_father;
 
                 lp_father = ipd_personDAO.findPerson(new Person(ai_idFather));
@@ -90,6 +94,11 @@ public class PersonServiceRS {
             }
 
             if (ai_idMother != 0) {
+
+                if (li_idMother != 0) {
+                    return Response.status(Status.BAD_REQUEST).build();
+                }
+
                 Person lp_mother;
 
                 lp_mother = ipd_personDAO.findPerson(new Person(ai_idMother));
@@ -98,15 +107,21 @@ public class PersonServiceRS {
                     return Response.status(Status.BAD_REQUEST).build();
                 }
             }
+            
+            if(li_idFather != 0)
+                ai_idFather = li_idFather;
+            
+            if(li_idMother != 0)
+                ai_idMother = li_idMother;
 
-            lp_person.setIdFather(ai_idFather);
-            lp_person.setIdMother(ai_idMother);
+            lp_child.setIdFather(ai_idFather);
+            lp_child.setIdMother(ai_idMother);
 
-            ipd_personDAO.updatePerson(lp_person);
+            ipd_personDAO.updatePerson(lp_child);
 
-            System.out.println("Persona modificada: " + lp_person);
+            System.out.println("Persona modificada: " + lp_child);
 
-            return Response.ok().entity(lp_person).build();
+            return Response.ok().entity(lp_child).build();
         } else {
             return Response.status(Status.NOT_FOUND).build();
         }
