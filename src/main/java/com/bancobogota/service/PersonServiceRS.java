@@ -57,41 +57,69 @@ public class PersonServiceRS {
 
         return ap_person;
     }
-    
-    @PUT
+
+    @GET
     @Consumes(value = MediaType.APPLICATION_JSON)
     @Produces(value = MediaType.APPLICATION_JSON)
-    @Path("adopt/{id}/{idFather}/{idMother}")
-    public Response editPerson(@PathParam("id") int ai_idPerson, @PathParam("id") int ai_idFather, @PathParam("id") int ai_idMother)
-    {
+    @Path("adopt/{idChild}/{idFather}/{idMother}")
+    public Response adopt(@PathParam("idChild") int ai_idPerson, @PathParam("idFather") int ai_idFather, @PathParam("idMother") int ai_idMother) {
         Person lp_person;
-        
+
         lp_person = ipd_personDAO.findPerson(new Person(ai_idPerson));
-        
-        if(lp_person != null)
-        {
+
+        if (lp_person != null) {
+
+            int li_idFather;
+            int li_idMother;
+
+            li_idFather = lp_person.getIdFather();
+            li_idMother = lp_person.getIdMother();
+
+            if (li_idFather == 0 && li_idMother == 0) {
+                return Response.status(Status.BAD_REQUEST).build();
+            }
+
+            if (ai_idFather != 0) {
+                Person lp_father;
+
+                lp_father = ipd_personDAO.findPerson(new Person(ai_idFather));
+
+                if (lp_father == null) {
+                    return Response.status(Status.BAD_REQUEST).build();
+                }
+            }
+
+            if (ai_idMother != 0) {
+                Person lp_mother;
+
+                lp_mother = ipd_personDAO.findPerson(new Person(ai_idMother));
+
+                if (lp_mother == null) {
+                    return Response.status(Status.BAD_REQUEST).build();
+                }
+            }
+
             lp_person.setIdFather(ai_idFather);
             lp_person.setIdMother(ai_idMother);
-            
+
             ipd_personDAO.updatePerson(lp_person);
-            
+
             System.out.println("Persona modificada: " + lp_person);
-        
+
             return Response.ok().entity(lp_person).build();
-        }
-        else
+        } else {
             return Response.status(Status.NOT_FOUND).build();
+        }
     }
-    
-    @DELETE
+
+    @GET
     @Produces(value = MediaType.APPLICATION_JSON)
     @Path("del/{id}")
-    public Response deletePerson(@PathParam("id") int ai_idPerson)
-    {
+    public Response deletePerson(@PathParam("id") int ai_idPerson) {
         ipd_personDAO.deletePerson(new Person(ai_idPerson));
-        
+
         System.out.println("Persona eliminada: " + ai_idPerson);
-        
+
         return Response.ok().build();
     }
 }
