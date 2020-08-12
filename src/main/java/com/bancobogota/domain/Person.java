@@ -35,12 +35,6 @@ public class Person implements Serializable {
 
     private Date birth;
 
-    private List<Person> hijos;
-
-    private final String CS_MASCULINO = "M";
-
-    private final String CS_FEMENINO = "F";
-
     public Person() {
     }
 
@@ -55,48 +49,32 @@ public class Person implements Serializable {
         phone = as_phone;
     }
 
-    public void Adoptar(Person ap_person) {
+    public Person Adoptar(Person ap_person) {
         if (ap_person != null) {
-            List<Person> llp_hijos;
             String ls_gender;
 
-            llp_hijos = getHijos();
             ls_gender = getGender();
 
-            if (llp_hijos == null) {
-                llp_hijos = new ArrayList<>();
-            }
-
-            if (ls_gender.equalsIgnoreCase(CS_MASCULINO)) {
+            if (ls_gender.equalsIgnoreCase("M")) {
                 int li_idFather;
 
                 li_idFather = ap_person.getIdFather();
 
                 if (li_idFather == 0) {
                     ap_person.setIdFather(getIdPerson());
-                    llp_hijos.add(ap_person);
                 }
-            } else if (ls_gender.equalsIgnoreCase(CS_FEMENINO)) {
+            } else if (ls_gender.equalsIgnoreCase("F")) {
                 int li_idMother;
 
                 li_idMother = ap_person.getIdMother();
 
                 if (li_idMother == 0) {
                     ap_person.setIdMother(getIdPerson());
-                    llp_hijos.add(ap_person);
                 }
             }
-
-            setHijos(llp_hijos);
         }
-    }
 
-    public List<Person> getHijos() {
-        return hijos;
-    }
-
-    public void setHijos(List<Person> alp_hijos) {
-        hijos = alp_hijos;
+        return ap_person;
     }
 
     public int getIdPerson() {
