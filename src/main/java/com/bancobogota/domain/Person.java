@@ -21,11 +21,9 @@ public class Person implements Serializable {
     @Column(name = "id_person")
     private int idPerson;
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_father")
     private int idFather;
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_mother")
     private int idMother;
 
